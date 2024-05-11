@@ -1,14 +1,18 @@
 package wayland
 
 import "core:c"
+import "core:os"
+
 #assert(size_of(int)  == size_of(c.long))
 #assert(size_of(uint) == size_of(c.ulong))
 #assert(size_of(i32)  == size_of(c.int))
 #assert(size_of(u32)  == size_of(c.uint))
 
-pid_t :: i32
-gid_t :: u32
-uid_t :: u32
+socklen_t :: c.int
+pid_t     :: c.int
+gid_t     :: c.uint
+uid_t     :: c.uint
+sockaddr  :: os.SOCKADDR
 
 /* ---- wayland-util.h --------------------------------------- */
 /* ----------------------------------------------------------- */

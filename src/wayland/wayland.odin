@@ -620,4 +620,39 @@ foreign wayland {
     connection: ^wl_connection,
     max_buffer_size: uint
     ) ---
+  /* ---- wayland-os.h ----------------------------------------*/
+  /* ----------------------------------------------------------*/
+
+  wl_os_socket_cloexec :: proc (
+    domain: i32,
+    type: i32,
+    protocol: i32
+    ) -> i32 ---
+  wl_os_socket_peercred :: proc (
+    sockfd: i32,
+    uid: ^uid_t,
+    gid: ^gid_t,
+    pid: ^pid_t
+    ) -> i32 ---
+  wl_os_dupfd_cloexec :: proc (fd: i32, minfd: i32) -> i32 ---
+  wl_os_recvmsg_cloexec :: proc (
+    sockfd: i32,
+    msg: ^linux.Msg_Hdr,
+    flags: i32,
+    ) -> int ---
+  wl_os_epoll_create_cloexec :: proc () -> i32 ---
+  wl_os_accept_cloexec :: proc (
+    sockfd: i32,
+    addr: ^sockaddr,
+    addrlen: ^socklen_t
+    ) -> i32 ---
+  wl_os_mremap_maymove :: proc (
+    fd: i32,
+    old_data: rawptr,
+    old_size: uint,
+    new_size: uint,
+    prot: i32,
+    flags: i32
+    ) -> rawptr ---
+
 }
