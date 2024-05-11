@@ -61,8 +61,6 @@ foreign wayland {
     implementation: rawptr,
     data: rawptr
     ) -> ^wl_resource ---
-  @(deprecated="")
-  wl_client_new_object     :: proc (
   wl_display_add_global    :: proc (
     display: ^wl_display,
     interface: ^wl_interface,
@@ -366,7 +364,7 @@ foreign wayland {
   wl_resource_set_user_data :: proc (
     resource: ^wl_resource,
     data: rawptr
-    ) --
+    ) ---
   wl_resource_get_user_data :: proc (
     resource: ^wl_resource
     ) -> rawptr ---
@@ -734,4 +732,70 @@ foreign wayland {
     tag: ^cstring
     ) ---
   wl_proxy_get_tag :: proc (proxy: ^proxy, tag: ^cstring) ---
+  wl_proxy_get_class :: proc (proxy: ^wl_proxy) -> string
+  wl_proxy_get_display :: proc (
+    proxy: ^wl_proxy
+    ) -> ^wl_display ---
+  wl_proxy_set_queue :: proc (
+    proxy: ^wl_proxy,
+    queue: ^wl_event_queue
+    ) ---
+  wl_proxy_get_queue :: proc (
+    #by_ptr proxy: wl_proxy
+    ) -> ^wl_event_queue ---
+  wl_event_queue_get_name :: proc (
+    #by_ptr queue: wl_event_queue
+    ) -> cstring ---
+  wl_display_connect :: proc (name: cstring) -> ^wl_display ---
+  wl_display_connect_to_fd :: proc (fd: i32) -> ^wl_display ---
+  wl_display_disconnect :: proc (display: ^wl_display) ---
+  wl_display_get_fd :: proc (display: ^wl_display) -> i32 ---
+  wl_display_dispatch :: proc (display: ^wl_display) -> i32 ---
+  wl_display_dispatch_queue :: proc (
+    display: ^wl_display,
+    queue: ^wl_event_queue
+    ) -> i32 ---
+  wl_display_dispatch_queue_pending :: proc (
+    display: ^wl_display,
+    queue: ^wl_event_queue
+    ) -> i32 ---
+  wl_display_dispatch_pending :: proc (
+    display: ^wl_display
+    ) -> i32 ---
+  wl_display_get_error :: proc (display: ^wl_display) -> i32 ---
+  /* TODO: interface is a pointer to a pointer */
+  wl_display_get_protocol_error :: proc (
+    display: ^wl_display,
+    #by_ptr interface: ^wl_interface,
+    id: ^u32
+    ) -> u32 ---
+  wl_display_flush :: proc (display: ^wl_display) -> i32 ---
+  wl_display_roundtrip_queue :: proc (
+    display: ^wl_display,
+    queue: ^wl_event_queue
+    ) -> i32 ---
+  wl_display_roundtrip :: proc (display: ^wl_display) -> i32 ---
+  wl_display_create_queue :: proc (
+    display: ^wl_display
+    ) -> ^wl_event_queue ---
+  wl_display_create_queue_with_name :: proc (
+    display: ^wl_display,
+    name: cstring
+    ) -> ^wl_event_queue ---
+  wl_display_prepare_read_queue :: proc (
+    display: ^wl_display,
+    queue: ^wl_event_queue
+    ) -> i32 ---
+  wl_display_prepare_read :: proc (
+    display: ^wl_display
+    ) -> i32 ---
+  wl_display_cancel_read :: proc (display: ^wl_display) ---
+  wl_display_read_events :: proc (
+    display: ^wl_display
+    ) -> i32 ---
+  wl_log_set_handler_client :: proc (handler: wl_log_func_t) ---
+  wl_display_set_max_buffer_size :: proc (
+    display: ^wl_display,
+    max_buffer_size: uint
+  ) ---
 }
