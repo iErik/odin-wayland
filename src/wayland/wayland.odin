@@ -41,36 +41,35 @@ foreign wayland {
   /* ---- wayland-server.h ------------------------------------*/
   /* ----------------------------------------------------------*/
 
-  /* DEPRECATED */
+  @(deprecated="")
   wl_client_add_resource   :: proc (
     client: ^wl_client,
     resource: ^wl_resource
     ) -> u32 ---
-  /* These functions return pointers: */
-  /* DEPRECATED */
+  @(deprecated="")
   wl_client_add_object     :: proc (
     client: ^wl_client,
     interface: ^wl_interface,
     implementation: rawptr,
     id: u32,
     data: rawptr
-    ) -> wl_resource ---
-  /* DEPRECATED */
+    ) -> ^wl_resource ---
+  @(deprecated="")
   wl_client_new_object     :: proc (
     client: ^wl_client,
     interface: ^wl_interface,
     implementation: rawptr,
     data: rawptr
-    ) -> wl_resource ---
-  /* DEPRECATED */
+    ) -> ^wl_resource ---
+  @(deprecated="")
+  wl_client_new_object     :: proc (
   wl_display_add_global    :: proc (
     display: ^wl_display,
     interface: ^wl_interface,
     data: rawptr,
     bind: wl_global_bind_func
-    ) -> wl_global ---
-  /* These don't return pointers: */
-  /* DEPRECATED */
+    ) -> ^wl_global ---
+  @(deprecated="")
   wl_display_remove_global :: proc (
     display: ^wl_display,
     global: wl_global
@@ -84,11 +83,10 @@ foreign wayland {
     signal: ^wl_priv_signal,
     listener: ^wl_listener
     ) ---
-  /* This next method returns a pointer */
   wl_priv_signal_get        :: proc (
     signal: ^wl_priv_signal,
     notify: wl_notify_func_t
-    ) -> wl_listener ---
+    ) -> ^wl_listener ---
   wl_priv_signal_emit       :: proc (
     signal: wl_priv_signal,
     data: rawptr
@@ -101,35 +99,31 @@ foreign wayland {
   /* ---- wayland-server-core.h -------------------------------*/
   /* ----------------------------------------------------------*/
 
-  /* Returns a pointer */
-  wl_event_loop_create :: proc () -> wl_event_loop ---
+  wl_event_loop_create :: proc () -> ^wl_event_loop ---
   wl_event_loop_destroy :: proc (loop: ^wl_event_loop) ---
-  /* Returns a pointer */
   wl_event_loop_add_fd :: proc (
     loop: ^wl_event_loop,
     fd: i32,
     mask: u32,
     func: wl_event_loop_fd_func_t,
     data: rawptr
-    ) -> wl_event_source ---
+    ) -> ^wl_event_source ---
   wl_event_source_fd_update :: proc (
     source: ^wl_event_source,
     mask: u32
     ) -> i32 ---
-  /* Returns a pointer */
   wl_event_loop_add_timer :: proc (
     loop: ^wl_event_loop,
     signal_number: i32,
     func: wl_event_loop_signal_func_t,
     data: rawptr
-    ) -> wl_event_source ---
-  /* Returns a pointer */
+    ) -> ^wl_event_source ---
   wl_event_loop_add_signal :: proc (
     loop: ^wl_event_loop,
     signal_number: i32,
     func: wl_event_loop_signal_func_t,
     data: rawptr
-    ) -> wl_event_source ---
+    ) -> ^wl_event_source ---
   wl_event_source_timer_update :: proc (
     source: ^wl_event_source,
     ms_delay: i32
@@ -145,29 +139,25 @@ foreign wayland {
     timeout: i32
     ) -> i32 ---
   wl_event_loop_dispatch_idle :: proc (loop: ^wl_event_loop) ---
-  /* Returns a pointer */
   wl_event_loop_add_idle :: proc (
     loop: ^wl_event_loop,
     func: wl_event_loop_idle_func_t,
     data: rawptr
-    ) -> wl_event_source ---
+    ) -> ^wl_event_source ---
   wl_event_loop_get_fd :: proc (loop: wl_event_loop) -> i32 ---
   wl_event_loop_add_destroy_listener :: proc (
     loop: ^wl_event_loop,
     listener: ^wl_listener
     ) ---
-  /* Returns a pointer */
   wl_event_loop_get_destroy_listener :: proc (
     loop: ^wl_event_loop,
     notify: wl_notify_func_t
-    ) -> wl_listener ---
-  /* Returns a pointer */
-  wl_display_create :: proc () -> wl_display ---
+    ) -> ^wl_listener ---
+  wl_display_create :: proc () -> ^wl_display ---
   wl_display_destroy :: proc (display: ^wl_display) ---
-  /* Returns a pointer */
   wl_display_get_event_loop :: proc (
     display: ^wl_display
-    ) -> wl_event_loop ---
+    ) -> ^wl_event_loop ---
   wl_display_add_socket :: proc (
     display: ^wl_display,
     name: cstring
@@ -199,7 +189,6 @@ foreign wayland {
     display: ^wl_display,
     listener: ^wl_listener
     ) ---
-  /* Returns a pointer */
   wl_display_get_destroy_listener :: proc (
     display: ^wl_display,
     notify: wl_notify_func_t
@@ -442,7 +431,7 @@ foreign wayland {
     display: ^wl_display,
     format: u32
     ) -> [^]u32 ---
-  // DEPRECATED
+  @(deprecated="")
   wl_shm_buffer_create :: proc (
     client: ^wl_client,
     id: u32,
@@ -620,6 +609,7 @@ foreign wayland {
     connection: ^wl_connection,
     max_buffer_size: uint
     ) ---
+
   /* ---- wayland-os.h ----------------------------------------*/
   /* ----------------------------------------------------------*/
 
@@ -655,4 +645,93 @@ foreign wayland {
     flags: i32
     ) -> rawptr ---
 
+  /* ---- wayland-client-core.h -------------------------------*/
+  /* ----------------------------------------------------------*/
+
+  wl_event_queue_destroy :: proc (queue: ^wl_event_queue) ---
+  wl_proxy_marshal_flags :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    #by_ptr interface: wl_interface,
+    version: u32,
+    flags: u32,
+    #c_varargs args: ..any
+    ) -> ^wl_proxy ---
+  wl_proxy_marshal_array_flags :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    #by_ptr interface: ^wl_interface,
+    version: u32,
+    flags: u32,
+    args: [^]wl_argument
+    ) -> ^wl_proxy ---
+  wl_proxy_marshal :: proc (
+    p: ^wl_proxy,
+    opcode: u32,
+    #c_varargs args: ..any
+    ) ---
+  wl_proxy_marshal_array :: proc (
+    p: ^wl_proxy,
+    opcode: u32,
+    args: [^]wl_argument
+    ) ---
+  wl_proxy_create :: proc (
+    factory: ^wl_proxy,
+    #by_ptr interface: wl_interface
+    ) -> ^wl_proxy ---
+  wl_proxy_create_wrapper :: proc (proxy: rawptr) -> rawptr ---
+  wl_proxy_wrapper_destroy :: proc (proxy_wrapper: rawptr) ---
+  wl_proxy_marshal_constructor :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    #by_ptr interface: wl_interface,
+    #c_varargs args: ..any
+    ) -> ^wl_proxy ---
+  wl_proxy_marshal_constructor_versioned :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    #by_ptr interface: wl_interface,
+    version: u32,
+    #c_varargs args: ..any
+    ) -> ^wl_proxy ---
+  wl_proxy_marshal_array_constructor :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    args: [^]wl_argument,
+    #by_ptr interface: wl_interface
+    ) -> ^wl_proxy ---
+  wl_proxy_marshal_array_constructor_versioned :: proc (
+    proxy: ^wl_proxy,
+    opcode: u32,
+    args: [^]wl_arguments,
+    #by_ptr interface: wl_interface,
+    version: u32
+    ) -> ^wl_proxy ---
+  wl_proxy_destroy :: proc (proxy: ^wl_proxy) ---
+  // TODO: Review function pointer arg
+  wl_proxy_add_listener :: proc (
+    proxy: ^wl_proxy,
+    implementation: proc (),
+    data: rawptr
+    ) -> i32 ---
+  wl_proxy_get_listener :: proc (proxy: ^wl_proxy) -> rawptr ---
+  wl_proxy_add_dispatcher :: proc (
+    proxy: ^wl_proxy,
+    dispatcher_func: wl_dispatcher_func_t,
+    dispatcher_data: rawptr,
+    data: rawptr
+    ) -> i32 ---
+  wl_proxy_set_user_data :: proc (
+    proxy: ^wl_proxy,
+    user_data: rawptr
+    ) ---
+  wl_proxy_get_user_data :: proc (prox: ^wl_proxy) -> rawptr ---
+  wl_proxy_get_version :: proc (proxy: ^wl_proxy) -> u32 ---
+  wl_proxy_get_id :: proc (proxy: ^wl_proxy) -> u32 ---
+  // TODO: tag is a `const char * const *` (bismillah)
+  wl_proxy_set_tag :: proc (
+    proxy: ^wl_proxy,
+    tag: ^cstring
+    ) ---
+  wl_proxy_get_tag :: proc (proxy: ^proxy, tag: ^cstring) ---
 }
