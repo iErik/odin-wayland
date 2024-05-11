@@ -90,7 +90,6 @@ wl_resource :: struct {
   data: rawptr
 }
 
-
 /* ---- wayland-server-private.h ----------------------------- */
 /* ----------------------------------------------------------- */
 
@@ -185,26 +184,6 @@ wl_signal :: struct {
   listener_list: wl_list
 }
 
-/* ---- wayland-client.h ------------------------------------- */
-/* ----------------------------------------------------------- */
-
-wl_proxy :: struct {
-  object: wl_object,
-  display: ^wl_display,
-	queue: ^wl_event_queue,
-	flags: u32,
-  refCount: i32,
-	user_data: rawptr,
-	dispatcher: wl_dispatcher_func_t,
-	version: u32,
-	tag: cstring,
-  queue_link: wl_list
-}
-
-wl_display :: struct { }
-
-wl_event_queue :: struct {  }
-
 /* ---- wayland-private.h ------------------------------------ */
 /* ----------------------------------------------------------- */
 
@@ -259,3 +238,30 @@ argument_details :: struct {
   type: wl_arg_type,
   nullable: i32
 }
+
+wl_iterator_func_t :: #type proc "c" (
+  element: rawptr,
+  data: rawptr,
+  flags: u32
+) -> wl_iterator_result
+
+/* ---- wayland-client.h ------------------------------------- */
+/* ----------------------------------------------------------- */
+
+wl_proxy :: struct {
+  object: wl_object,
+  display: ^wl_display,
+	queue: ^wl_event_queue,
+	flags: u32,
+  refCount: i32,
+	user_data: rawptr,
+	dispatcher: wl_dispatcher_func_t,
+	version: u32,
+	tag: cstring,
+  queue_link: wl_list
+}
+
+wl_display :: struct { }
+
+wl_event_queue :: struct {  }
+

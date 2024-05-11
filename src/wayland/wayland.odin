@@ -460,4 +460,164 @@ foreign wayland {
   wl_protocol_logger_destroy :: proc (
     logger: ^wl_protocol_logger
     ) ---
+
+  /* ---- wayland-private.h -----------------------------------*/
+  /* ----------------------------------------------------------*/
+
+  wl_interface_equal :: proc (
+    #by_ptr iface1: wl_interface,
+    #by_ptr iface2: wl_interface
+    ) -> i32 ---
+  wl_map_init :: proc (mapArg: ^wl_map, side: u32) ---
+  wl_map_release :: proc (mapArg: ^wl_map) ---
+  wl_map_insert_new :: proc (
+    aMap: ^wl_map,
+    flags: u32,
+    data: rawptr
+    ) -> u32 ---
+  wl_map_insert_at :: proc (
+    aMap: ^wl_map,
+    flags: u32,
+    i: u32,
+    data: rawptr
+    ) -> i32 ---
+  wl_map_reserve_new :: proc (
+    aMap: ^wl_map,
+    i: u32
+    ) -> i32 ---
+  wl_map_remove :: proc (aMap: ^wl_map, i: u32) ---
+  wl_map_lookup :: proc (aMap: ^wl_map, i: u32) -> rawptr ---
+  wl_map_lookup_flags :: proc (aMap: ^wl_map, i: u32) -> u32 ---
+  wl_map_for_each :: proc (
+    aMap: ^wl_map,
+    func: wl_iterator_func_t,
+    data: rawptr
+    ) ---
+  wl_connection_create :: proc (
+    fd: i32,
+    max_buffer_size: uint
+    ) -> ^wl_connection ---
+  wl_connection_destroy :: proc (
+    connection: ^wl_connection
+    ) -> i32 ---
+  wl_connection_copy :: proc (
+    connection: ^wl_connection,
+    data: rawptr,
+    size: uint
+    ) ---
+  wl_connection_consume :: proc (
+    connection: ^wl_connection,
+    size: uint
+    ) ---
+  wl_connection_flush :: proc (
+    connection: ^wl_connection
+    ) -> i32 ---
+  wl_connection_pending_input :: proc (
+    connection: ^wl_connection
+    ) -> u32 ---
+  wl_connection_read :: proc (
+    connection: ^wl_connection
+    ) -> i32 ---
+  wl_connection_write :: proc (
+    connection: ^wl_connection,
+    data: rawptr,
+    count: u32
+    ) -> i32 ---
+  wl_connection_queue :: proc (
+    connection: ^wl_connection,
+    data: rawptr,
+    count: u32
+    ) -> i32 ---
+  wl_connection_get_fd :: proc (
+    connection: ^wl_connection
+    ) -> i32 ---
+  get_next_argument :: proc (
+    signature: cstring,
+    #by_ptr details: argument_details
+    ) -> string ---
+  arg_count_for_signature :: proc (signature: cstring) -> i32 ---
+  wl_message_count_arrays :: proc (
+    #by_ptr message: wl_message
+    ) -> i32 ---
+  wl_message_get_since :: proc (
+    #by_ptr message: wl_message
+    ) -> i32 ---
+  // TODO: revise va_list argument
+  wl_argument_from_va_list :: proc (
+    signature: cstring,
+    #by_ptr args: wl_argument,
+    count: i32,
+    ap: c.va_list
+    ) ---
+  wl_closure_marshal :: proc (
+    #by_ptr sender: wl_object,
+    opcode: u32,
+    #by_ptr args: wl_argument,
+    #by_ptr message: wl_message
+    ) -> ^wl_closure ---
+  wl_closure_vmarshal :: proc (
+    #by_ptr sender: wl_object,
+    opcode: u32,
+    ap: c.va_list,
+    #by_ptr message: wl_message
+    ) -> ^wl_closure ---
+  wl_connection_demarshal :: proc (
+    connection: ^wl_connection,
+    size: u32,
+    objects: ^wl_map,
+    #by_ptr message: wl_message
+    ) -> ^wl_closure ---
+  wl_object_is_zombie :: proc (
+    aMap: ^wl_map,
+    id: u32
+    ) -> bool ---
+  wl_closure_lookup_objects :: proc (
+    closure: ^wl_closure,
+    objects: ^wl_map
+    ) -> i32 ---
+  wl_closure_invoke :: proc (
+    closure: ^wl_closure,
+    flags: u32,
+    target: ^wl_object,
+    opcode: u32,
+    data: rawptr
+    ) ---
+  wl_closure_dispatch :: proc (
+    closure: ^wl_closure,
+    flags: u32,
+    target: ^wl_object,
+    opcode: u32,
+    data: rawptr
+    ) ---
+  wl_closure_send :: proc (
+    closure: ^wl_closure,
+    connection: ^wl_connection
+    ) -> i32 ---
+  wl_closure_queue :: proc (
+    closure: ^wl_closure,
+    connection: ^wl_connection
+    ) -> i32 ---
+  // TODO: Revise C function pointer
+  wl_closure_print :: proc (
+    closure: ^wl_closure,
+    target: ^wl_object,
+    send: i32,
+    discarded: i32,
+    #by_ptr n_parse: proc (arg: ^wl_argument) -> u32,
+    queue_name: cstring
+    ) ---
+  wl_closure_destroy :: proc (closure: ^wl_closure) ---
+  wl_log :: proc (fmt: cstring, #c_vararg args: ..any) ---
+  wl_abort :: proc (fmt: cstring, #c_vararg args: ..any) ---
+  wl_display_get_additional_shm_formats :: proc (
+    display: ^wl_display
+    ) -> ^wl_array ---
+  wl_connection_close_fds_in :: proc (
+    connection: ^wl_connection,
+    max: i32
+    ) ---
+  wl_connection_set_max_buffer_size :: proc (
+    connection: ^wl_connection,
+    max_buffer_size: uint
+    ) ---
 }
