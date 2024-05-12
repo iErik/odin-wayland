@@ -18,8 +18,8 @@ foreign wayland {
   wl_list_init   :: proc (list: ^wl_list) ---
   wl_list_insert :: proc (list: ^wl_list, elm: ^wl_list) ---
   wl_list_remove :: proc (elm: ^wl_list) ---
-  wl_list_length :: proc (list: ^wl_list) -> i32 ---
-  wl_list_empty  :: proc (list: ^wl_list) -> i32 ---
+  wl_list_length :: proc (#by_ptr list: wl_list) -> i32 ---
+  wl_list_empty  :: proc (#by_ptr list: wl_list) -> i32 ---
   wl_list_insert_list :: proc (
     list: ^wl_list,
     other: ^wl_list
@@ -732,7 +732,7 @@ foreign wayland {
     tag: ^cstring
     ) ---
   wl_proxy_get_tag :: proc (proxy: ^proxy, tag: ^cstring) ---
-  wl_proxy_get_class :: proc (proxy: ^wl_proxy) -> string
+  wl_proxy_get_class :: proc (proxy: ^wl_proxy) -> string ---
   wl_proxy_get_display :: proc (
     proxy: ^wl_proxy
     ) -> ^wl_display ---

@@ -14,6 +14,17 @@ gid_t     :: c.uint
 uid_t     :: c.uint
 sockaddr  :: os.SOCKADDR
 
+/** TODO: Missing bindings: **
+  * Server Side:
+  *  - wl_display
+  *  - wl_client
+  *  - wl_event_loop
+  *  - wl_global
+  * Client Side:
+  *  - wl_display
+  *  - wl_event_queue
+ **/
+
 /* ---- wayland-util.h --------------------------------------- */
 /* ----------------------------------------------------------- */
 
