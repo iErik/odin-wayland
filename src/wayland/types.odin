@@ -38,10 +38,10 @@ wl_dispatcher_func_t :: #type proc "c" (
   args: [^]wl_argument
 ) -> i32
 
-wl_log_func_t :: #type proc "c" {
+wl_log_func_t :: #type proc "c" (
   fmt: cstring,
   args: [^]c.va_list
-}
+)
 
 wl_iterator_result :: enum {
   WL_ITERATOR_STOP,
@@ -85,8 +85,8 @@ wl_array :: struct {
   data: rawptr
 }
 
-/* ---- wayland-server.h ------------------------------------- */
-/* ----------------------------------------------------------- */
+/* ---- wayland-server.h -------------------------------- */
+/* ------------------------------------------------------ */
 
 wl_client :: struct { }
 
@@ -105,16 +105,16 @@ wl_resource :: struct {
   data: rawptr
 }
 
-/* ---- wayland-server-private.h ----------------------------- */
-/* ----------------------------------------------------------- */
+/* ---- wayland-server-private.h ------------------------ */
+/* ------------------------------------------------------ */
 
 wl_priv_signal :: struct {
   listener_list: wl_list,
   emit_list: wl_list
 }
 
-/* ---- wayland-server-core.h -------------------------------- */
-/* ----------------------------------------------------------- */
+/* ---- wayland-server-core.h --------------------------- */
+/* ------------------------------------------------------ */
 
 WL_EVENT_READABLE :: 0x01
 WL_EVENT_WRITABLE :: 0x02
@@ -136,7 +136,9 @@ wl_event_loop_signal_func_t :: #type proc "c" (
   data: rawptr
 ) -> i32
 
-wl_event_loop_idle_func_t :: #type proc "c" (data: rawptr) ---
+wl_event_loop_idle_func_t :: #type proc "c" (
+  data: rawptr
+)
 
 wl_resource_destroy_func_t :: #type proc "c" (
   resource: ^wl_resource
@@ -199,8 +201,8 @@ wl_signal :: struct {
   listener_list: wl_list
 }
 
-/* ---- wayland-private.h ------------------------------------ */
-/* ----------------------------------------------------------- */
+/* ---- wayland-private.h ------------------------------- */
+/* ------------------------------------------------------ */
 
 WL_MAP_SERVER_SIDE         :: 0
 WL_MAP_CLIENT_SIDE         :: 1
@@ -260,8 +262,8 @@ wl_iterator_func_t :: #type proc "c" (
   flags: u32
 ) -> wl_iterator_result
 
-/* ---- wayland-client.h ------------------------------------- */
-/* ----------------------------------------------------------- */
+/* ---- wayland-client.h -------------------------------- */
+/* ------------------------------------------------------ */
 
 wl_proxy :: struct {
   object: wl_object,
@@ -280,7 +282,7 @@ wl_display :: struct { }
 
 wl_event_queue :: struct {  }
 
-/* ---- wayland-client-core.h -------------------------------- */
-/* ----------------------------------------------------------- */
+/* ---- wayland-client-core.h --------------------------- */
+/* ------------------------------------------------------ */
 
 
